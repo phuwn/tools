@@ -67,6 +67,7 @@ func (f Frame) Format(s fmt.State, verb rune) {
 // Stack represents a stack of program counters.
 type Stack []uintptr
 
+// Format - implementation of Formatter interface of "fmt" package for custom print
 func (s *Stack) Format(st fmt.State, verb rune) {
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -88,20 +89,7 @@ func (s *Stack) Format(st fmt.State, verb rune) {
 	}
 }
 
-// MarshalJSON - implementation of Marshaler interface of "json" package to marshal stack
-func (s *Stack) MarshalJSON() ([]byte, error) {
-	if len(*s) == 0 {
-		return []byte(""), nil
-	}
-	ptr := *s
-	f := newFrame(ptr[0])
-	name := f.FuncName
-	if name == "unknown" {
-		return []byte(name), nil
-	}
-	return []byte(fmt.Sprintf("%s %s:%d", name, f.FileName, f.Line)), nil
-}
-
+// Caller - get current frame info
 func Caller() *Frame {
 	frame := &Frame{
 		PC:       0,
@@ -124,6 +112,7 @@ func Caller() *Frame {
 	return frame
 }
 
+// Callers - get current stack trace
 func Callers() *Stack {
 	const depth = 32
 	var pcs [depth]uintptr
