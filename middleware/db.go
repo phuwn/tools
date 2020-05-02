@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo"
 
+	"github.com/phuwn/tools/db"
 	"github.com/phuwn/tools/log"
-	"github.com/phuwn/tools/util/db"
 )
 
 // AddTransaction - middleware that help add transaction to handler

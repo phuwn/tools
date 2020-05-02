@@ -1,7 +1,6 @@
 package errors
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -55,73 +54,44 @@ func New(msg string, args ...interface{}) error {
 	}
 }
 
-// NewResp - generate a new custom error with provided info
-func NewResp(code int, msg string, details ...string) error {
-	return &CError{
-		Code:    code,
-		Message: msg,
-		Details: details,
-		stack:   util.Callers(),
-	}
-}
-
-// UpdateCode - update status of an error
-func UpdateCode(err error, code int) error {
+// Customize - customize normal error to CError, push new message ahead of the details stack
+func Customize(code int, msg string, err error) error {
 	if err == nil {
 		return nil
 	}
+
 	ce, ok := err.(*CError)
 	if ok {
+		if code != 0 {
+			ce.Code = code
+		}
+		if msg != "" {
+			ce.Details = append([]string{ce.Message}, ce.Details...)
+			ce.Message = msg
+		}
+		return ce
+	}
+
+	ce = &CError{
+		Code:    http.StatusInternalServerError,
+		Message: err.Error(),
+		stack:   util.Callers(),
+	}
+
+	if code != 0 {
 		ce.Code = code
-		return ce
 	}
-
-	return &CError{
-		Code:    code,
-		Message: err.Error(),
-		stack:   util.Callers(),
-	}
-}
-
-// AddDetails - push new details to error's details stack
-func AddDetails(err error, details ...string) error {
-	if err == nil {
-		return nil
-	}
-	ce, ok := err.(*CError)
-	if ok {
-		ce.Details = append(details, ce.Details...)
-		return ce
-	}
-
-	return &CError{
-		Code:    http.StatusInternalServerError,
-		Message: err.Error(),
-		Details: details,
-		stack:   util.Callers(),
-	}
-}
-
-// Overload - push new message into current error, the old message will be ahead of the details stack
-func Overload(msg string, err error) error {
-	if err == nil {
-		return errors.New(msg)
-	}
-	ce, ok := err.(*CError)
-	if ok {
-		ce.Details = append([]string{ce.Message}, ce.Details...)
+	if msg != "" {
+		ce.Details = []string{err.Error()}
 		ce.Message = msg
-		return ce
 	}
-	return &CError{
-		Code:    http.StatusInternalServerError,
-		Message: msg,
-		Details: []string{err.Error()},
-		stack:   util.Callers(),
-	}
+	return ce
 }
 
 // IsRecordNotFound - check if an error is a RecordNotFound error
 func IsRecordNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
 	return err.Error() == RecordNotFound
 }
