@@ -51,6 +51,10 @@ func Fatal(err error) {
 	logger.Fatal(err)
 }
 
+func Fatalf(msg string, args ...interface{}) {
+	logger.Fatal(fmt.Errorf(msg, args...))
+}
+
 func Color(color int, msg string, args ...interface{}) {
 	logger.Color(color, fmt.Sprintf(msg, args...))
 }

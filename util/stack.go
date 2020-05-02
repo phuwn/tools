@@ -7,8 +7,6 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-
-	"github.com/phuwn/musichub/pkg/util"
 )
 
 // Frame - contains the current stack trace frame's information
@@ -47,12 +45,12 @@ func (f Frame) Format(s fmt.State, verb rune) {
 			io.WriteString(s, "\n\t")
 			io.WriteString(s, f.FileName)
 		default:
-			io.WriteString(s, util.CleanPath(f.FileName))
+			io.WriteString(s, CleanPath(f.FileName))
 		}
 	case 'd':
 		io.WriteString(s, strconv.Itoa(f.Line))
 	case 'n':
-		io.WriteString(s, formatFuncName(f.FuncName))
+		io.WriteString(s, FormatFuncName(f.FuncName))
 	case 'v':
 		f.Format(s, 's')
 		io.WriteString(s, ":")

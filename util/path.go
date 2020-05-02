@@ -2,14 +2,16 @@ package util
 
 import "strings"
 
-func formatFuncName(name string) string {
+// FormatFuncName - short function name
+func FormatFuncName(name string) string {
 	i := strings.LastIndex(name, "/")
 	name = name[i+1:]
 	i = strings.Index(name, ".")
 	return name[i+1:]
 }
 
-func cleanPath(path string) string {
+// CleanPath - make a clean path from the normal path with format `folder/file.go`
+func CleanPath(path string) string {
 	if path == "" {
 		return "."
 	}

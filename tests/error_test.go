@@ -1,4 +1,4 @@
-package tests
+package test
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"github.com/phuwn/tools/errors"
 )
 
-func Test_cError_Print(t *testing.T) {
+func Test_CError_Print(t *testing.T) {
 	cErr := errors.New("testing")
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -29,7 +29,7 @@ func Test_cError_Print(t *testing.T) {
 		{
 			name:   "log full error with tracing",
 			format: "%+v",
-			want:   fmt.Sprintf("testing\ngithub.com/phuwn/tools/tests.Test_cError_Print\n\t%s/error_test.go:13", currentDir),
+			want:   fmt.Sprintf("testing\ngithub.com/phuwn/tools/test.Test_CError_Print\n\t%s/error_test.go:13", currentDir),
 		},
 	}
 	for _, tt := range tests {

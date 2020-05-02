@@ -1,4 +1,4 @@
-package tests
+package test
 
 import (
 	"bytes"
@@ -24,12 +24,12 @@ func Test_Frame_Print(t *testing.T) {
 		{
 			name:   "file clean path",
 			format: "%s",
-			want:   "tests/stack_test.go",
+			want:   "test/stack_test.go",
 		},
 		{
 			name:   "file path detail",
 			format: "%+s",
-			want:   fmt.Sprintf("github.com/phuwn/tools/tests.Test_Frame_Print\n\t%s/stack_test.go", currentDir),
+			want:   fmt.Sprintf("github.com/phuwn/tools/test.Test_Frame_Print\n\t%s/stack_test.go", currentDir),
 		},
 		{
 			name:   "code line only",
@@ -44,12 +44,12 @@ func Test_Frame_Print(t *testing.T) {
 		{
 			name:   "short frame info",
 			format: "%v",
-			want:   "tests/stack_test.go:13 Test_Frame_Print",
+			want:   "test/stack_test.go:13 Test_Frame_Print",
 		},
 		{
 			name:   "full frame info",
 			format: "%+v",
-			want:   fmt.Sprintf("github.com/phuwn/tools/tests.Test_Frame_Print\n\t%s/stack_test.go:13", currentDir),
+			want:   fmt.Sprintf("github.com/phuwn/tools/test.Test_Frame_Print\n\t%s/stack_test.go:13", currentDir),
 		},
 	}
 	for _, tt := range tests {
