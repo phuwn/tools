@@ -3,6 +3,7 @@ module github.com/phuwn/tools
 go 1.13
 
 require (
+	bou.ke/monkey v1.0.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect

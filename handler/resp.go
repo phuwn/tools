@@ -38,10 +38,7 @@ func JSONError(err error, c echo.Context) {
 	er := errFormat(err, c)
 	if er.Code == 500 {
 		log.Error(err)
-		er.Message = "internal server error"
-		er.Details = []string{}
 	}
-	resp := &JSONResponse{er.Code, er, nil}
 
-	c.JSON(er.Code, resp)
+	c.JSON(er.Code, &JSONResponse{er.Code, er, nil})
 }

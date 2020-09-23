@@ -1,7 +1,6 @@
 package log
 
 import (
-	"fmt"
 	"os"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -55,14 +54,6 @@ var (
 
 	reset = []byte{'\033', '[', '0', 'm'}
 )
-
-func cW(f *formatter, s string, args ...interface{}) {
-	if !isTTY {
-		fmt.Print(s)
-		return
-	}
-	fmt.Printf(fmt.Sprintf("\033[%d;3%dm", f.style, f.color)+s+"\033[0m", args...)
-}
 
 func methodForm(method string) *formatter {
 	var c color

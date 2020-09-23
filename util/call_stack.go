@@ -62,11 +62,11 @@ func (f Frame) Format(s fmt.State, verb rune) {
 	}
 }
 
-// Stack represents a stack of program counters.
-type Stack []uintptr
+// CallStack represents a stack of program counters.
+type CallStack []uintptr
 
 // Format - implementation of Formatter interface of "fmt" package for custom print
-func (s *Stack) Format(st fmt.State, verb rune) {
+func (s *CallStack) Format(st fmt.State, verb rune) {
 	currentDir, err := os.Getwd()
 	if err != nil {
 		fmt.Fprintln(st, "\n failed to get current directory "+err.Error())
@@ -88,14 +88,14 @@ func (s *Stack) Format(st fmt.State, verb rune) {
 }
 
 // Caller - get current frame info
-func Caller() *Frame {
+func Caller(skip int) *Frame {
 	frame := &Frame{
 		PC:       0,
 		FileName: "unknown",
 		Line:     0,
 		FuncName: "unknown",
 	}
-	pc, file, line, ok := runtime.Caller(1)
+	pc, file, line, ok := runtime.Caller(skip)
 	if !ok {
 		return frame
 	}
@@ -111,10 +111,10 @@ func Caller() *Frame {
 }
 
 // Callers - get current stack trace
-func Callers() *Stack {
+func Callers() *CallStack {
 	const depth = 32
 	var pcs [depth]uintptr
 	n := runtime.Callers(3, pcs[:])
-	var st Stack = pcs[0:n]
+	var st CallStack = pcs[0:n]
 	return &st
 }
