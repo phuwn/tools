@@ -35,7 +35,7 @@ func AddTransaction(next echo.HandlerFunc) echo.HandlerFunc {
 				return "", false
 			}()
 			if doRollBack {
-				log.Info("rollback transaction: %s", msg)
+				log.Info("rollback transaction: ", msg)
 				tx.Rollback()
 				return err
 			}
