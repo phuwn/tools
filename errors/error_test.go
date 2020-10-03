@@ -63,6 +63,16 @@ func Test_CError_Marshal(t *testing.T) {
 			content: Customize(fmt.Errorf("token is invalid"), 401, "Unauthorized"),
 			want:    `{"error":"Unauthorized","details":["token is invalid"]}`,
 		},
+		{
+			name:    "detail is a JSON",
+			content: Customize(fmt.Errorf(`{"error":"token is invalid"}`), 401, "Unauthorized"),
+			want:    `{"error":"Unauthorized","details":["{error:token is invalid}"]}`,
+		},
+		{
+			name:    "detail got endline",
+			content: Customize(fmt.Errorf("token is \ninvalid"), 401, "Unauthorized"),
+			want:    `{"error":"Unauthorized","details":["token is invalid"]}`,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

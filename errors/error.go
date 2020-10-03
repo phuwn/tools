@@ -5,8 +5,13 @@ import (
 	"io"
 	"net/http"
 	"reflect"
+	"regexp"
 
 	"github.com/phuwn/tools/util"
+)
+
+var (
+	re = regexp.MustCompile(`["` + "\t" + "\n]")
 )
 
 type MessageStack []string
@@ -31,7 +36,7 @@ func (ms MessageStack) Format(s fmt.State, verb rune) {
 func (ms MessageStack) MarshalJSON() ([]byte, error) {
 	res := "["
 	for i := len(ms) - 1; i >= 0; i-- {
-		res += fmt.Sprintf(`"%s"`, ms[i])
+		res += `"` + re.ReplaceAllString(ms[i], "") + `"`
 		if i != 0 {
 			res += ","
 		}
